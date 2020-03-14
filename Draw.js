@@ -61,57 +61,6 @@
 			div.style.borderRadius = this.borderType;
 			this.append.appendChild(div);
 			this.obj = div;
-			}
-			addInterface = (append) =>{
-			let button = new Button('<',append,move,stop);
-			button.create();
-			let button2 = new Button('>',append,move,stop)
-			button2.create();
-			}
-			
-		}
-		class Button{
-			constructor(content,append,f1,f2){
-			this.content=content;
-			this.append = append
-			this.f1 = f1;
-			this.f2 = f2
-			}
-			
-			create = () => {
-			let button = document.createElement("button");
-			button.style.height = "50px";
-			button.style.width = "50px";
-			button.innerHTML = this.content
-			button.onmousedown = this.f1;
-			button.style.border = "2px solid white";
-			button.style.borderRadius = "30px"
-			button.onmouseup = this.f2;
-			this.append.appendChild(button)			
 			}			
 		}
-		move = (e) => {
-			let sign = e.currentTarget.innerText
-			
-			time = setInterval(()=>{
-			console.log(sign)
-				if(sign=="<"&& global_y>0) {
-				console.log("tyl")
-				global_y-=20}
-			else if(sign==">" && global_y<420){ 
-			console.log("przod")
-			global_y+=20}	
-			},50)	
-		}
 		
-		stop = (e) => {
-		console.log("clear")
-		 clearInterval(time)	
-		}
-		
-		run = (e) => {
-		console.log("okkk")
-		let name = e.currentTarget.innerText
-		if(name=='fast') speed=10
-		else speed=200
-		}
