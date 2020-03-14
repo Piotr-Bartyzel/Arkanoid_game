@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+		<head>		
+		<script src="Draw.js"></script>
+		<script>
+			var global_x=0;
+			let start = "";
+			let totalPoints =0;
+			let speed = 10;
+	
+			window.onload = function(){
+			let x = {v:200}
+			let y = {v:0}
+			let d1 = {v:1}
+			let d2 = {v:1}
+			drawS = new DrawScene(520, 520,"relative","2px solid black","0px",0,0,"lightblue",document.body);
+			drawS.create();
+			
+			drawInterface = new DrawItem(520, 50,"relative","2px solid black","0px",0,0,null,"gray",document.body);
+			drawInterface.create();
+			drawInterface.addInterface(drawInterface.obj)
+			
+			drawBall = new DrawItem(40, 40,"absolute","1px solid black","25px",200,0,null,"blue",drawS.obj);
+			drawBall.create();
+			
+			drawPlatform = new DrawItem(100, 10,"absolute","0px solid black","0px",global_x,null,global_y,"black",drawS.obj);
+			drawPlatform.create();
+			start = setInterval(()=>{animation(x,y,d1,d2,drawBall.obj,drawPlatform.obj,drawS.obj)},speed)
+			}
+			
+			animation = (x,y,d1,d2,b,platform,scene) => {
+				console.log(speed)
+				platform.style.left = global_y +"px";
+				x.v=x.v+2*d1.v;
+				y.v=y.v+2*d2.v;
+				b.style.top = (x.v) + "px";
+				b.style.left = (y.v) + "px";
+					if(x.v>=470){ 
+						console.log("dx")
+						if(parseInt(b.style.left)>=parseInt(platform.style.left)-20 && parseInt(b.style.left)<=(parseInt(platform.style.left)+120)){
+							d1.v=-d1.v
+						}
+						else {
+							drawF = new DrawItem(520, 520,"relative","2px solid black","0px",0,0,null,"black",scene);
+							drawF.create();
+							drawF.obj.style.color = "white";
+							drawF.obj.style.opacity = "0.7";
+							drawF.obj.style.fontSize = "25px";
+							drawF.obj.onclick = ()=>{location.reload()};
+							drawF.obj.innerHTML = "Game over! You have: "+totalPoints+" points! <br> Click to restart";
+							clearInterval(start)
+						}
+					}
+					else if ( x.v<=0) d1.v=-d1.v	
+					if(y.v>=480 || y.v<=0){ 
+								d2.v=-d2.v					
+					}
+				let tr = false;
+				for(var i=0;i<10;i++){
+					for(var j=0;j<3;j++){
+						var el = document.getElementById(i*52+j*52*10);
+						let y = parseInt(el.style.top)
+						let x = parseInt(el.style.left)
+						let endy = parseInt(el.style.top) + parseInt(el.style.height)
+						let endx = parseInt(el.style.left) + parseInt(el.style.width)
+	
+						let by = parseInt(b.style.top);
+						let bxm = parseInt(b.style.left)+20;
+						let bx = parseInt(b.style.left);
+						let bxx = parseInt(b.style.left)+40;
+						let byy = parseInt(b.style.top)+20;
+	
+
+						if(!tr && ((by<= endy && by>= y)||(byy<= endy && byy>= y)) && ((bxm>= x && bxm<= endx)) && (el.style.backgroundColor!="lightblue")){
+							tr = true;
+							d1.v=-d1.v
+							totalPoints++;
+							el.style.backgroundColor="lightblue"
+							el.style.border="1px solid lightblue"
+						} 
+
+						if(!tr && ((byy<= endy && byy>= y)) && ((bx>= x && bx<= endx)||(bxx>= x && bxx<= endx)) && (el.style.backgroundColor!="lightblue")){
+							tr = true;
+							d2.v=-d2.v
+							totalPoints++;
+							el.style.backgroundColor="lightblue"
+							el.style.border="1px solid lightblue"
+						} 
+					}
+				}
+			}
+			
+			document.addEventListener("keydown",(e)=>{
+				if(e.which==37 && global_y>0) global_y-=20
+				else if(e.which==39 && global_y<420) global_y+=20			
+			})
+			
+			</script>
+		</head>
+		<body>
+				
+		</body>
+
+</html>
